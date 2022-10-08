@@ -48,9 +48,9 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
     lowerPing = false;
   }
 
-  let outSing: JyutpingChar['sing'] = '';
-  let outWan: JyutpingChar['wan'] = '';
-  let outTone: JyutpingChar['tone'] = null;
+  let outSing: JyutpingChar['sing'];
+  let outWan: JyutpingChar['wan'];
+  let outTone: JyutpingChar['tone'];
 
   // 聲母
   if (!upperYam && upperStop) {
@@ -153,17 +153,17 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
 
   const fricative = ['f', 's', 'h'];
   if (!upperYam && (stops.includes(upperJyutping.sing) || fricative.includes(upperJyutping.sing))) {
-    if (outTone === 2) {
+    if (outTone! === 2) {
       outTone = 3;
-    } else if (outTone === 5) {
+    } else if (outTone! === 5) {
       outTone = 6;
     }
   }
 
   const outJyutping: JyutpingChar = {
-    sing: outSing,
+    sing: outSing!,
     wan: outWan,
-    tone: outTone,
+    tone: outTone!,
   };
 
   return outJyutping;
@@ -207,26 +207,27 @@ const Faancit: NextPage = () => {
   const [toFaancit, setToFaancit] = useState<string>('');
 
   const outputChars: JyutpingChar | null = doFaancit(toFaancit);
+  const outputSing: string | null = outputChars ? getSing(outputChars): null;
 
   return (
-    <div className='container mx-auto text-center flex flex-col justify-between h-48'>
+    <div className='container mx-auto text-center'>
       <Head>
         <title>粵語反切轉換</title>
         <meta name='description' content='Cantonese Faancit' />
       </Head>
       <h1 className='mt-5 text-xl'>粵語反切轉換</h1>
-      <div className='input'>
+      <div className='input my-20'>
         <input
           type='text'
           id='toFaancit'
           placeholder='輸入反切字'
           value={toFaancit}
-          onChange={(e) => setToFaancit(e.target.value)}
+          onChange={(e) => setToFaancit(e.target.value.trim())}
         />
         <span>切</span>
       </div>
       <div className='output'>
-        <p>{outputChars && outputChars.sing + outputChars.wan + outputChars.tone}</p>
+        <p>{outputChars && outputChars.sing + outputChars.wan + outputChars.tone} {outputSing && outputSing}</p>
       </div>
     </div>
   );
