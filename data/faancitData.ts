@@ -76,8 +76,9 @@ export type JyutpingChar = {
   'yun' |
   'yut' |
   'm' |
-  'ng';
-  tone: 1 | 2 | 3 | 4 | 5 | 6;
+  'ng' |
+  '';
+  tone: 1 | 2 | 3 | 4 | 5 | 6 | null;
 };
 
 export const JyutpingDict: Record<string, JyutpingChar> = {
@@ -19992,88 +19993,88 @@ export const JyutpingDict: Record<string, JyutpingChar> = {
     tone: 6
   },
   嗯: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 6
   },
   蜈: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 4
   },
   鼯: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 4
   },
   梧: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 4
   },
   吾: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 4
   },
   吳: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 4
   },
   鋙: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 4
   },
   伍: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 5
   },
   牾: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 5
   },
   午: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 5
   },
   忤: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 5
   },
   五: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 5
   },
   焐: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 6
   },
   晤: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 6
   },
   誤: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 6
   },
   摀: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 6
   },
   悟: {
-    sing: "",
-    wan: "ng",
+    sing: "ng",
+    wan: "",
     tone: 6
   },
   牙: {
