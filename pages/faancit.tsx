@@ -2,30 +2,27 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 
-import { JyutpingDict, JyutpingChar } from '../data/faancitData';
+import Jyutping, { JyutpingChar } from '../data/Jyutping';
 
 const doFaancit = (inputChars: string): JyutpingChar | null => {
   if (inputChars.length !== 2) return null;
 
-  const upperChar = inputChars[0];
-  const lowerChar = inputChars[1];
+  const upperChar = new Jyutping(inputChars[0]);
+  const lowerChar = new Jyutping(inputChars[1]);
 
-  if (JyutpingDict[upperChar] == null || JyutpingDict[lowerChar] == null) return null;
+  if (upperChar.noData() || lowerChar.noData()) return null;
 
-  const upperJyutping = JyutpingDict[upperChar];
-  const lowerJyutping = JyutpingDict[lowerChar];
-
-  if (lowerJyutping.wan === '') return null; // 反切下字無元音
+  if (lowerChar.wan === '') return null; // 反切下字無元音
 
   // 陰陽
   let upperYam;
   let lowerYam;
-  if (upperJyutping.tone! <= 3) {
+  if (upperChar.tone! <= 3) {
     upperYam = true;
   } else {
     upperYam = false;
   }
-  if (lowerJyutping.tone! <= 3) {
+  if (lowerChar.tone! <= 3) {
     lowerYam = true;
   } else {
     lowerYam = false;
@@ -34,7 +31,7 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
   // 上字塞音
   let upperStop;
   const stops = ['b', 'p', 'd', 't', 'g', 'k', 'gw', 'kw', 'z', 'c'];
-  if (stops.includes(upperJyutping.sing)) {
+  if (stops.includes(upperChar.sing)) {
     upperStop = true;
   } else {
     upperStop = false;
@@ -42,7 +39,7 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
 
   // 下字平聲
   let lowerPing;
-  if (lowerJyutping.tone === 1 || lowerJyutping.tone === 4) {
+  if (lowerChar.tone === 1 || lowerChar.tone === 4) {
     lowerPing = true;
   } else {
     lowerPing = false;
@@ -55,7 +52,7 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
   // 聲母
   if (!upperYam && upperStop) {
     if (lowerPing) {
-      switch (upperJyutping.sing) {
+      switch (upperChar.sing) {
         case 'b':
         case 'p':
           outSing = 'p';
@@ -80,7 +77,7 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
           break;
       }
     } else if (!lowerPing) {
-      switch (upperJyutping.sing) {
+      switch (upperChar.sing) {
         case 'b':
         case 'p':
           outSing = 'b';
@@ -105,20 +102,20 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
           break;
       }
     }
-  } else if (upperJyutping.sing === 'f') {
+  } else if (upperChar.sing === 'f') {
     // 古無輕唇音
     outSing = 'b';
   } else {
-    outSing = upperJyutping.sing;
+    outSing = upperChar.sing;
   }
 
   // 韻母
-  outWan = lowerJyutping.wan;
+  outWan = lowerChar.wan;
 
   // 聲調
   if (upperYam && !lowerYam) {
     // console.log('上字陰下字陽');
-    switch (lowerJyutping.tone) {
+    switch (lowerChar.tone) {
       case 4:
         outTone = 1;
         break;
@@ -133,7 +130,7 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
     }
   } else if (!upperYam && lowerYam) {
     // console.log('上字陽下字陰');
-    switch (lowerJyutping.tone) {
+    switch (lowerChar.tone) {
       case 1:
         outTone = 4;
         break;
@@ -148,11 +145,11 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
     }
   } else {
     // console.log('上下字陰陽相等');
-    outTone = lowerJyutping.tone;
+    outTone = lowerChar.tone;
   }
 
   const fricative = ['f', 's', 'h'];
-  if (!upperYam && (stops.includes(upperJyutping.sing) || fricative.includes(upperJyutping.sing))) {
+  if (!upperYam && (stops.includes(upperChar.sing) || fricative.includes(lowerChar.sing))) {
     if (outTone! === 2) {
       outTone = 3;
     } else if (outTone! === 5) {
@@ -169,45 +166,10 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
   return outJyutping;
 };
 
-const getSing = (char: JyutpingChar): string => {
-  let tail = char.wan.slice(-1);
-  const enterSound = ['p', 't', 'k']
-  if (!enterSound.includes(tail)) {
-    switch (char.tone) {
-      case 1:
-        return '陰平';
-      case 2:
-        return '陰上';
-      case 3:
-        return '陰去';
-      case 4:
-        return '陽平';
-      case 5:
-        return '陽上';
-      case 6:
-        return '陽去';
-      default:
-        return '';
-    }
-  } else {
-    switch (char.tone) {
-      case 1:
-        return '陰入';
-      case 3:
-        return '中入';
-      case 6:
-        return '陽入';
-      default:
-        return '';
-    }
-  }
-}
-
 const Faancit: NextPage = () => {
   const [toFaancit, setToFaancit] = useState<string>('');
 
   const outputChars: JyutpingChar | null = doFaancit(toFaancit);
-  const outputSing: string | null = outputChars ? getSing(outputChars): null;
 
   return (
     <div className='container mx-auto text-center'>
@@ -227,7 +189,7 @@ const Faancit: NextPage = () => {
         <span>切</span>
       </div>
       <div className='output'>
-        <p>{outputChars && outputChars.sing + outputChars.wan + outputChars.tone} {outputSing && outputSing}</p>
+        <p>{outputChars && outputChars.sing + outputChars.wan + outputChars.tone}</p>
       </div>
     </div>
   );
