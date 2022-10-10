@@ -83,6 +83,9 @@ export type JyutpingChar = {
 	tone: 1 | 2 | 3 | 4 | 5 | 6 | null;
 };
 
+const STOPS = ['b', 'p', 'd', 't', 'g', 'k', 'gw', 'kw', 'z', 'c'];
+const FRICATIVES = ['f', 's', 'h'];
+
 /**
  * A jyutping character
  * @char Chinese character (Tradtional Chinese only)
@@ -99,7 +102,7 @@ export default class Jyutping {
 			this.jyutpingChar = null;
 			return
 		}
-		
+
 		this.jyutpingChar = JyutpingDict[char];
 		this.sing = this.jyutpingChar.sing;
 		this.wan = this.jyutpingChar.wan;
@@ -108,6 +111,22 @@ export default class Jyutping {
 
 	noData = (): boolean => {
 		return this.jyutpingChar === null ? true : false;
+	}
+
+	isStop = (): boolean => {
+		return STOPS.includes(this.sing);
+	}
+
+	isFricative = ():boolean => {
+		return FRICATIVES.includes(this.sing);
+	}
+
+	/**
+	 * 平聲
+	 * @returns true if it is a level tone
+	 */
+	isPing = (): boolean => {
+		return (this.tone === 1 || this.tone === 4);
 	}
 
 	static getSing = (jyutpingChar: JyutpingChar): string => {

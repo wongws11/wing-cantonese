@@ -29,21 +29,9 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
   }
 
   // 上字塞音
-  let upperStop;
-  const stops = ['b', 'p', 'd', 't', 'g', 'k', 'gw', 'kw', 'z', 'c'];
-  if (stops.includes(upperChar.sing)) {
-    upperStop = true;
-  } else {
-    upperStop = false;
-  }
-
+  const upperStop = upperChar.isStop();
   // 下字平聲
-  let lowerPing;
-  if (lowerChar.tone === 1 || lowerChar.tone === 4) {
-    lowerPing = true;
-  } else {
-    lowerPing = false;
-  }
+  const lowerPing = lowerChar.isPing();
 
   let outSing: JyutpingChar['sing'];
   let outWan: JyutpingChar['wan'];
@@ -148,8 +136,7 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
     outTone = lowerChar.tone;
   }
 
-  const fricative = ['f', 's', 'h'];
-  if (!upperYam && (stops.includes(upperChar.sing) || fricative.includes(lowerChar.sing))) {
+  if (!upperYam && (upperChar.isStop() || lowerChar.isFricative())) {
     if (outTone! === 2) {
       outTone = 3;
     } else if (outTone! === 5) {
