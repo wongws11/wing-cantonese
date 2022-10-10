@@ -1,4 +1,4 @@
-import { JyutpingDict } from './jyutpingDict';
+import { JyutpingMap } from './jyutpingMap';
 
 export type JyutpingChar = {
 	sing: 'b' |
@@ -99,15 +99,15 @@ export default class Jyutping {
 	jyutpingChar: JyutpingChar | null;
 
 	constructor(char: string) {
-		if (JyutpingDict[char] == null) {
+		if (JyutpingMap[char] == null) {
 			this.jyutpingChar = null;
 			return
 		}
 
-		this.jyutpingChar = JyutpingDict[char];
+		this.jyutpingChar = JyutpingMap[char];
 		this.sing = this.jyutpingChar.sing;
 		this.wan = this.jyutpingChar.wan;
-		this.tone = JyutpingDict[char].tone;
+		this.tone = JyutpingMap[char].tone;
 	}
 
 	noData = (): boolean => {

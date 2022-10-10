@@ -1,6 +1,9 @@
 import { JyutpingChar } from './Jyutping';
 
-export const JyutpingDict: Record<string, JyutpingChar> = {
+/**
+ * Charater to Jyutping Map
+ */
+export const JyutpingMap: Record<string, JyutpingChar> = {
   丫: {
     sing: "",
     wan: "aa",
