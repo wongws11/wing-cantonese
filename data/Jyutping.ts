@@ -85,6 +85,7 @@ export type JyutpingChar = {
 
 const STOPS = ['b', 'p', 'd', 't', 'g', 'k', 'gw', 'kw', 'z', 'c'];
 const FRICATIVES = ['f', 's', 'h'];
+const ENTERSOUNDS = ['p', 't', 'k'];
 
 /**
  * A jyutping character
@@ -97,7 +98,7 @@ export default class Jyutping {
 
 	jyutpingChar: JyutpingChar | null;
 
-	public constructor(char: string) {
+	constructor(char: string) {
 		if (JyutpingDict[char] == null) {
 			this.jyutpingChar = null;
 			return
@@ -129,10 +130,18 @@ export default class Jyutping {
 		return (this.tone === 1 || this.tone === 4);
 	}
 
+	/**
+	 * 陰陽
+	 * @returns true if Yam; false if Yeung; null if there is no tone.
+	 */
+	isYam = (): boolean | null => {
+		if (this.tone === null) return null;
+		return this.tone <= 3 ? true : false;
+	}
+
 	static getSing = (jyutpingChar: JyutpingChar): string => {
 		let tail = jyutpingChar.wan.slice(-1);
-		const enterSound = ['p', 't', 'k']
-		if (!enterSound.includes(tail)) {
+		if (!ENTERSOUNDS.includes(tail)) {
 			switch (jyutpingChar.tone) {
 				case 1:
 					return '陰平';

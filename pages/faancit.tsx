@@ -15,19 +15,8 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
   if (lowerChar.wan === '') return null; // 反切下字無元音
 
   // 陰陽
-  let upperYam;
-  let lowerYam;
-  if (upperChar.tone! <= 3) {
-    upperYam = true;
-  } else {
-    upperYam = false;
-  }
-  if (lowerChar.tone! <= 3) {
-    lowerYam = true;
-  } else {
-    lowerYam = false;
-  }
-
+  const upperYam = upperChar.isYam();
+  const lowerYam = lowerChar.isYam();
   // 上字塞音
   const upperStop = upperChar.isStop();
   // 下字平聲
