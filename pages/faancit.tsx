@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Jyutping, { JyutpingChar } from '../data/Jyutping';
 
-const doFaancit = (inputChars: string): JyutpingChar | null => {
+const doFaancit = (inputChars: string): JyutpingChar[] | null => {
   if (inputChars.length !== 2) return null;
 
   const upperChar = new Jyutping(inputChars[0]);
@@ -139,22 +139,26 @@ const doFaancit = (inputChars: string): JyutpingChar | null => {
     tone: outTone!,
   };
 
-  return outJyutping;
+  return [outJyutping, upperChar, lowerChar];
 };
 
 const Faancit: NextPage = () => {
   const [toFaancit, setToFaancit] = useState<string>('');
 
-  const outputChars: JyutpingChar | null = doFaancit(toFaancit);
+  const outputChars: JyutpingChar[] | null = doFaancit(toFaancit);
+
+  const outputChar: JyutpingChar | null = outputChars ? outputChars[0] : null;
+  const upperChar: JyutpingChar | null = outputChars ? outputChars[1] : null;
+  const lowerChar: JyutpingChar | null = outputChars ? outputChars[2] : null;
 
   return (
-    <div className='container mx-auto text-center'>
+    <div className='container mx-auto text-left max-w-sm'>
       <Head>
         <title>粵語反切轉換</title>
         <meta name='description' content='Cantonese Faancit' />
       </Head>
-      <h1 className='mt-5 text-xl'>粵語反切轉換</h1>
-      <div className='input my-20'>
+      <h1 className='my-5 text-xl text-center'>粵語反切轉換</h1>
+      <div className='input my-3'>
         <input
           type='text'
           id='toFaancit'
@@ -164,8 +168,40 @@ const Faancit: NextPage = () => {
         />
         <span>切</span>
       </div>
-      <div className='output'>
-        <p>{outputChars && outputChars.sing + outputChars.wan + outputChars.tone}</p>
+      <div className='output flex flex-col justify-between h-28'>
+        <p>
+          上字：
+          {upperChar && (
+            <>
+              <span className='text-blue-500'>{upperChar.sing}</span>
+              <span className='text-blue-500'>{upperChar.wan}</span>
+              <span className=''>{upperChar.tone}</span>
+              <span className='ml-5'>{Jyutping.getSing(upperChar)}聲</span>
+            </>
+          )}
+        </p>
+        <p>
+          下字：
+          {lowerChar && (
+            <>
+              <span className='text-green-500'>{lowerChar.sing}</span>
+              <span className='text-green-500'>{lowerChar.wan}</span>
+              <span className=''>{lowerChar.tone}</span>
+              <span className='ml-5'>{Jyutping.getSing(lowerChar)}聲</span>
+            </>
+          )}
+        </p>
+        <p>
+          反切讀音：
+          {outputChar && (
+            <>
+              <span className='text-blue-500'>{outputChar.sing}</span>
+              <span className='text-green-500'>{outputChar.wan}</span>
+              <span className=''>{outputChar.tone}</span>
+              <span className='ml-5'>{Jyutping.getSing(outputChar)}聲</span>
+            </>
+          )}
+        </p>
       </div>
     </div>
   );
