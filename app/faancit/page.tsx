@@ -1,8 +1,12 @@
+"use client"
+
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 
-import Jyutping, { JyutpingChar } from '../data/Jyutping';
+import Jyutping, { JyutpingChar } from '../../data/Jyutping';
+
+import '../global.css'
 
 const doFaancit = (inputChars: string): JyutpingChar[] | null => {
   if (inputChars.length !== 2) return null;
@@ -142,7 +146,7 @@ const doFaancit = (inputChars: string): JyutpingChar[] | null => {
   return [outJyutping, upperChar, lowerChar];
 };
 
-const Faancit: NextPage = () => {
+const FaancitPage: NextPage = () => {
   const [toFaancit, setToFaancit] = useState<string>('');
 
   const outputChars: JyutpingChar[] | null = doFaancit(toFaancit);
@@ -196,4 +200,4 @@ const Faancit: NextPage = () => {
   );
 };
 
-export default Faancit;
+export default FaancitPage;
