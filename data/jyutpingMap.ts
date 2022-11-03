@@ -1,4 +1,4 @@
-import { JyutpingChar } from './Jyutping';
+import { JyutpingChar } from '../components/Jyutping';
 
 /**
  * Charater to Jyutping Map

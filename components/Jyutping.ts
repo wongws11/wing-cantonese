@@ -1,4 +1,4 @@
-import { JyutpingMap } from './jyutpingMap';
+import { JyutpingMap } from '../data/jyutpingMap';
 
 export type JyutpingChar = {
 	sing: 'b' |
@@ -118,7 +118,7 @@ export default class Jyutping {
 		return STOPS.includes(this.sing);
 	}
 
-	isFricative = ():boolean => {
+	isFricative = (): boolean => {
 		return FRICATIVES.includes(this.sing);
 	}
 
