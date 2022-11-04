@@ -10,6 +10,9 @@ export const Navbar = () => {
 				<Link className='inline-flex items-center p-2 mr-4' href='/faancit'>
 					<span className='text-xl text-white font-bold uppercase tracking-wide'>反切</span>
 				</Link>
+				<Link className='inline-flex items-center p-2 mr-4' href='/simpleinput'>
+					<span className='text-xl text-white font-bold uppercase tracking-wide'>速成</span>
+				</Link>
 			</nav>
 		</>
 	);

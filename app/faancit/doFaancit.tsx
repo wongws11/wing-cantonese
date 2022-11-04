@@ -1,3 +1,5 @@
+'use client';
+
 import Jyutping, { JyutpingChar } from '../../components/Jyutping';
 
 export const doFaancit = (inputChars: string): JyutpingChar[] | null => {

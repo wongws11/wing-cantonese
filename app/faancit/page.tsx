@@ -4,8 +4,6 @@ import Head from 'next/head';
 import { useState } from 'react';
 
 import Jyutping, { JyutpingChar } from '../../components/Jyutping';
-
-import '../global.css';
 import { doFaancit } from './doFaancit';
 
 const FaancitPage = () => {

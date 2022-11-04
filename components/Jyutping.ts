@@ -1,4 +1,4 @@
-import { JyutpingMap } from '../data/jyutpingMap';
+import { JyutpingMap } from '../data/JyutpingMap';
 
 export type JyutpingChar = {
 	sing: 'b' |
