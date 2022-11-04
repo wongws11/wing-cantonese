@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
 import { getChars, charsToPick } from './doSimplex';
 
+import styles from './simpleinput.module.css';
+
 const SimpleInputPage = () => {
 	const [input, setInput] = useState<string>('');
 	const [toPick, setToPick] = useState<charsToPick | null>(null);
@@ -72,22 +74,25 @@ const SimpleInputPage = () => {
 
 	const pickingList = (toPick: charsToPick) => {
 		return (
-			<div className='mx-auto flex flex-row justify-center border bg-blue-200 rounded max-w-lg'>
+			<div className={styles.wholeList}>
+				{maxPage! > 0 && <div className={styles.arrows}>&larr;</div>}
 				{toPick.charArray.map((list: string[], page: number) => {
 					return (
-						<div className={'flex flex-col ' + (page === currPage && 'bg-yellow-500')} key={page}>
+						<div className={`${styles.singleList} ${page === currPage && styles.currentSelection}`} key={page}>
 							{list.map((char: string, selectKey: number) => {
 								if (selectKey === 9) selectKey = 0;
 								else selectKey = selectKey + 1;
 								return (
-									<span key={selectKey}>
-										{char} {selectKey}
-									</span>
+									<div key={selectKey} className={styles.key}>
+										<span>{char}</span> <span>{selectKey}</span>
+									</div>
 								);
 							})}
+							{currPage! + 1 + '/' + (toPick.pages + 1)}
 						</div>
 					);
 				})}
+				{maxPage! > 0 && <div className={styles.arrows}>&rarr;</div>}
 			</div>
 		);
 	};
@@ -101,7 +106,6 @@ const SimpleInputPage = () => {
 			<div>{output && output}</div>
 			<input type='text' className='border border-black rounded my-5' value={input} onChange={(e) => handleInput(e.target.value)} />
 			{toPick && pickingList(toPick)}
-			<div>{toPick && toPick.pages}</div>
 		</div>
 	);
 };
