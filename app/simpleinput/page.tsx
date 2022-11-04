@@ -21,14 +21,16 @@ const SimpleInputPage = () => {
 		const alphabets: string = inputString.replace(/[^a-z]/gi, '').toLowerCase();
 		let num: number | null = inputString.replace(/[^0-9]/gi, '') ? Number(inputString.replace(/[^0-9]/gi, '')) : null;
 		if (num === 0) num = 10;
-		const key = inputString.replace(/[^-=]/gi, '') ? inputString.replace(/[^-=]/gi, '') : null;
+		let key = inputString.replace(/[^-=\s]/gi, '') ? inputString.replace(/[^-=\s]/gi, '') : null;
 		if (toPick && maxPage) {
+			if (key === ' ') key = '=';
 			switch (key) {
 				case '=':
 					currPage === maxPage ? setCurrPage(0) : setCurrPage(currPage! + 1);
 					break;
 				case '-':
 					currPage === 0 ? setCurrPage(maxPage) : setCurrPage(currPage! - 1);
+					break;
 			}
 		}
 
@@ -40,8 +42,17 @@ const SimpleInputPage = () => {
 		setInput(alphabets);
 	};
 
+	const handleKeydown = (key: string) => {
+		if (key === 'Backspace') {
+			setOutput(output.slice(0, -1));
+		} else if (key === 'Escape') {
+			navigator.clipboard.writeText(output);
+			setOutput('');
+		}
+	};
+
 	useEffect(() => {
-		setToPick(getChars(input));
+		setToPick(getChars(input.slice(0, 2)));
 	}, [input]);
 
 	useEffect(() => {
@@ -53,6 +64,11 @@ const SimpleInputPage = () => {
 			setMaxPage(null);
 		};
 	}, [toPick]);
+
+	useEffect(() => {
+		addEventListener('keydown', (e) => handleKeydown(e.key));
+		return removeEventListener('keydown', (e) => handleKeydown(e.key));
+	}, [output]);
 
 	const pickingList = (toPick: charsToPick) => {
 		return (
