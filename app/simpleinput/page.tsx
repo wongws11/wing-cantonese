@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
-import { getChars, charsToPick } from './doSimplex';
+import { getChars, charsToPick, alphaToChar } from './doSimplex';
 
 import styles from './simpleinput.module.css';
 
@@ -15,18 +15,22 @@ const SimpleInputPage = () => {
 	const [maxPage, setMaxPage] = useState<number | null>(null);
 
 	const inputRef = useRef<HTMLInputElement>(null);
+	const focusInput = () => {inputRef.current &&  inputRef.current.focus()}
 
 	const handleOutput = (char: string) => {
 		setOutput(output + char);
 		setInput('');
+		focusInput();
 	};
 
 	const prevPage = () => {
 		currPage === maxPage ? setCurrPage(0) : setCurrPage(currPage! + 1);
+		focusInput();
 	}
 	
 	const nextPage = () => {
 		currPage === 0 ? setCurrPage(maxPage) : setCurrPage(currPage! - 1)
+		focusInput();
 	}
 
 	const handleInput = (inputString: string): void => {
