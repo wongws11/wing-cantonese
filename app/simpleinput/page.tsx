@@ -14,6 +14,8 @@ const SimpleInputPage = () => {
 	const [currPage, setCurrPage] = useState<number | null>(null);
 	const [maxPage, setMaxPage] = useState<number | null>(null);
 
+	const inputRef = useRef<HTMLInputElement>(null);
+
 	const handleOutput = (char: string) => {
 		setOutput(output + char);
 		setInput('');
@@ -53,7 +55,7 @@ const SimpleInputPage = () => {
 	};
 
 	const handleKeydown = (key: string) => {
-		if (key === 'Backspace') {
+		if (key === 'Backspace' && inputRef.current!.value.length === 0) {
 			setOutput(output.slice(0, -1));
 		} else if (key === 'Escape') {
 			navigator.clipboard.writeText(output);
@@ -111,8 +113,8 @@ const SimpleInputPage = () => {
 				<title>速成輸入法</title>
 				<meta name='description' content='Simple Input' />
 			</Head>
-			<textarea className={styles.outputTextarea} value={output} style={{ resize: 'none' }} /> <br/>
-			<input autoFocus type='text' className='border border-black rounded my-3 w-16' style={{boxShadow:'0 0 5px grey'}} value={input} onChange={(e) => handleInput(e.target.value)} />
+			<textarea readOnly className={styles.outputTextarea} value={output} style={{ resize: 'none' }} /> <br/>
+			<input autoFocus type='text' ref={inputRef} className='border border-black rounded my-3 w-16' style={{boxShadow:'0 0 5px grey'}} value={input} onChange={(e) => handleInput(e.target.value)} />
 			{toPick && pickingList(toPick)}
 		</div>
 	);
