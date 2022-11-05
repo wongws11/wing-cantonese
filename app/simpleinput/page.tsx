@@ -19,6 +19,14 @@ const SimpleInputPage = () => {
 		setInput('');
 	};
 
+	const prevPage = () => {
+		currPage === maxPage ? setCurrPage(0) : setCurrPage(currPage! + 1);
+	}
+	
+	const nextPage = () => {
+		currPage === 0 ? setCurrPage(maxPage) : setCurrPage(currPage! - 1)
+	}
+
 	const handleInput = (inputString: string): void => {
 		const alphabets: string = inputString.replace(/[^a-z]/gi, '').toLowerCase();
 		let num: number | null = inputString.replace(/[^0-9]/gi, '') ? Number(inputString.replace(/[^0-9]/gi, '')) : null;
@@ -28,10 +36,10 @@ const SimpleInputPage = () => {
 			if (key === ' ') key = '=';
 			switch (key) {
 				case '=':
-					currPage === maxPage ? setCurrPage(0) : setCurrPage(currPage! + 1);
+					prevPage();
 					break;
 				case '-':
-					currPage === 0 ? setCurrPage(maxPage) : setCurrPage(currPage! - 1);
+					nextPage();
 					break;
 			}
 		}
@@ -75,7 +83,7 @@ const SimpleInputPage = () => {
 	const pickingList = (toPick: charsToPick) => {
 		return (
 			<div className={styles.wholeList}>
-				{maxPage! > 0 && <div className={styles.arrows}>&larr;</div>}
+				{maxPage! > 0 && <div className={styles.arrows} onClick={nextPage}>&larr;</div>}
 				{toPick.charArray.map((list: string[], page: number) => {
 					return (
 						<div className={`${styles.singleList} ${page === currPage && styles.currentSelection}`} key={page}>
@@ -83,7 +91,7 @@ const SimpleInputPage = () => {
 								if (selectKey === 9) selectKey = 0;
 								else selectKey = selectKey + 1;
 								return (
-									<div key={selectKey} className={styles.key}>
+									<div key={selectKey} className={styles.key} onClick={() => handleOutput(char)}>
 										<span>{char}</span> <span>{selectKey}</span>
 									</div>
 								);
@@ -92,7 +100,7 @@ const SimpleInputPage = () => {
 						</div>
 					);
 				})}
-				{maxPage! > 0 && <div className={styles.arrows}>&rarr;</div>}
+				{maxPage! > 0 && <div className={styles.arrows} onClick={prevPage}>&rarr;</div>}
 			</div>
 		);
 	};
