@@ -126,7 +126,7 @@ const SimpleInputPage = () => {
 			</Head>
 			<textarea className={styles.outputTextarea} value={output} onChange={(e) => setOutput(e.target.value)} style={{ resize: 'none' }} /> <br/>
 			<input autoFocus type='text' ref={inputRef} className='border border-black rounded my-3 w-16' style={{boxShadow:'0 0 5px grey'}} value={input} onChange={(e) => handleInput(e.target.value)} />
-			<button className='btn' onClick={() => handleCopynClean()}>Copy to clipboard and clean up</button>
+			<button className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 rounded-full' onClick={() => handleCopynClean()}>Copy to clipboard and clean up</button>
 			{toPick && pickingList(toPick)}
 		</div>
 	);
