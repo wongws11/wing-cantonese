@@ -1,10 +1,6 @@
-# my-portal
-All of my personal tools and script
+# Wing Cantonese
 
-## To do
-- Nextjs
+Two Cantonese tools: 
 
-- Parcel checker
-- Pet Insurance claim pdf maker
-- Finance planner
-- Mirgrate wingcantonese' tools
+- Simple Input
+- Faancit
